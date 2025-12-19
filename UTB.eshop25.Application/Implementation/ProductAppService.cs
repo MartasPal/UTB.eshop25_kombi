@@ -23,6 +23,7 @@ namespace UTB.eshop25.Application.Implementation
             return _dbContext.Products.ToList();
         }
 
+
         public void Create(Product product)
         {
             _dbContext.Products.Add(product);

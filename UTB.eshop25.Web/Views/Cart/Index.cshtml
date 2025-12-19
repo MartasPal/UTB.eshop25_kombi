@@ -1,0 +1,54 @@
+﻿@using UTB.eshop25.Web.Models.Cart
+@model List<CartItem>
+
+@{
+    ViewData["Title"] = "Cart";
+
+    var total = Model.Sum(i => i.Price * i.Amount);
+}
+
+<h1>Cart</h1>
+
+@if (Model == null || !Model.Any())
+{
+    <p>Cart is empty.</p>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Back to products</a>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price / pcs</th>
+                <th>Amount</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var i in Model.OrderBy(x => x.Name))
+            {
+                <tr>
+                    <td>@i.Name</td>
+                    <td>@i.Price Kč</td>
+                    <td>x @i.Amount</td>
+                    <td><b>@(i.Price* i.Amount) Kč</b></td>
+                </tr>
+            }
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-end"><b>Total:</b></td>
+                <td><b>@total Kč</b></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="d-flex gap-2">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Continue shopping</a>
+        <a asp-controller="Cart" asp-action="Clear" class="btn btn-danger">Clear cart</a>
+        <a asp-action="Checkout" class="btn btn-success">Checkout</a>
+    </div>
+}

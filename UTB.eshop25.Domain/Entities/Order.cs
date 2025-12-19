@@ -9,16 +9,22 @@ namespace UTB.eshop25.Domain.Entities
         public DateTime DateTimeCreated { get; protected set; }
 
         [Required]
-        public string OrderNumber { get; set; }
+        public string OrderNumber { get; set; } = String.Empty;
 
         [Required]
         public double TotalPrice { get; set; }
 
-        //[ForeignKey(nameof(User))]
+        [Required]
+        public string CustomerName { get; set; } = "";
+
+        [Required]
+        public string Address { get; set; } = "";
+
+        [ForeignKey(nameof(User))]
         public int UserId { get; set; }
 
-        //public IUser<int> User { get; set; }
+        public User? User { get; set; }
 
-        public IList<OrderItem> OrderItems { get; set; }
+        public IList<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }

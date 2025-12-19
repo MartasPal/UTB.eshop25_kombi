@@ -1,8 +1,48 @@
-﻿@{
+﻿@using UTB.eshop25.Domain.Entities
+@model IList<Product>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1>Products</h1>
+
+<div class="mb-3">
+    <a asp-controller="Cart"
+       asp-action="Index"
+       class="btn btn-secondary">
+
+        Go to cart
+        <span id="cartCount" class="badge bg-danger ms-2">0</span>
+    </a>
 </div>
+
+@foreach (var p in Model)
+{
+    <div class="card mb-2">
+        <div class="card-body">
+            <h5>@p.Name</h5>
+            <p>@p.Description</p>
+            <b>@p.Price Kč</b><br />
+
+            <button class="btn btn-primary mt-2"
+                    onclick="addToCart(@p.Id)">
+                Add to cart
+            </button>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function addToCart(id) {
+            fetch('/Cart/AddToCartAjax?id=' + id, {
+                method: 'POST'
+            })
+            .then(r => r.json())
+            .then(count => {
+                document.getElementById('cartCount').innerText = count;
+            });
+        }
+    </script>
+}

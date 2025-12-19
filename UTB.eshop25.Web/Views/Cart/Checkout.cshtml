@@ -1,0 +1,60 @@
+﻿@model UTB.eshop25.Web.Models.OrderCheckoutVM
+
+@{
+    ViewData["Title"] = "Checkout";
+    var total = Model.Items.Sum(i => i.Price * i.Amount);
+}
+
+<h1>Checkout</h1>
+
+<form asp-action="Checkout" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label class="form-label">Customer name</label>
+        <input class="form-control" asp-for="CustomerName" />
+        <span class="text-danger" asp-validation-for="CustomerName"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Address</label>
+        <input class="form-control" asp-for="Address" />
+        <span class="text-danger" asp-validation-for="Address"></span>
+    </div>
+
+    <h3>Items</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price/pcs</th>
+                <th>Amount</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in Model.Items)
+            {
+                <tr>
+                    <td>@i.Name</td>
+                    <td>@i.Price Kč</td>
+                    <td>x @i.Amount</td>
+                    <td>@(i.Price* i.Amount) Kč</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-end"><b>Total:</b></td>
+                <td><b>@total Kč</b></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <button type="submit" class="btn btn-success">Create order</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

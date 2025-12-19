@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession();
 
 var connectionString = builder.Configuration.GetConnectionString("MySQL");
 ServerVersion serverVersion = new MySqlServerVersion("8.0.29");
@@ -14,6 +15,10 @@ ServerVersion serverVersion = new MySqlServerVersion("8.0.29");
 builder.Services.AddDbContext<EshopDbContext>(options => options.UseMySql(connectionString, serverVersion));
 
 builder.Services.AddScoped<IProductAppService, ProductAppService>();
+builder.Services.AddScoped<IOrderAppService, OrderAppService>();
+builder.Services.AddScoped<IUserAppService, UserAppService>();
+
+
 
 var app = builder.Build();
 
@@ -27,6 +32,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

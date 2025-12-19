@@ -1,0 +1,60 @@
+﻿@using UTB.eshop25.Domain.Entities
+@model Order
+
+@{
+    ViewData["Title"] = "Order Detail";
+    var total = Model.OrderItems.Sum(i => i.Price * i.Amount);
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="mb-3">
+    <a asp-action="Select" class="btn btn-secondary">Back</a>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <p><b>Id:</b> @Model.Id</p>
+        <p><b>OrderNumber:</b> @Model.OrderNumber</p>
+        <p><b>Customer:</b> @Model.CustomerName</p>
+        <p><b>Address:</b> @Model.Address</p>
+        <p><b>TotalPrice:</b> @Model.TotalPrice Kč</p>
+    </div>
+</div>
+
+<h3>Items</h3>
+
+@if (Model.OrderItems == null || Model.OrderItems.Count == 0)
+{
+    <p>No items.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price/pcs</th>
+                <th>Amount</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in Model.OrderItems)
+            {
+                <tr>
+                    <td>@(i.Product?.Name ?? $"ProductID {i.ProductID}")</td>
+                    <td>@i.Price Kč</td>
+                    <td>x @i.Amount</td>
+                    <td><b>@(i.Price* i.Amount) Kč</b></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-end"><b>Total:</b></td>
+                <td><b>@total Kč</b></td>
+            </tr>
+        </tfoot>
+    </table>
+}

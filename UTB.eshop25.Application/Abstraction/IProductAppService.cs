@@ -11,6 +11,7 @@ namespace UTB.eshop25.Application.Abstraction
     {
         IList<Product> SelectAll();
         void Create(Product product);
+        Product? Select(int id);
         bool Delete(int id);
     }
 }
